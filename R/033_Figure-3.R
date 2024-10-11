@@ -8,13 +8,12 @@ library(ggalluvial)
 library(countrycode)
 library(cowplot)
 
-path_results <- "data/results"
-
+path_results <- "data"
 
 # A sankey ----------------------------------------------------------------
 
 # adjust here to access the correct model results file:
-file <- basename(results_agg_price)
+file <- results_agg_price #results_agg_price, results_agg_mass, results_agg_equal, results_agg_primary
 store <- read.csv(file.path(path_results, file))
 
 # aggregate EU27

@@ -58,17 +58,17 @@ source("R/032_Figure-2.R")
 # requires model results computed in step 2 run GLORIA 
 # If the user skipped running the models, it is possible to continue with the ready-to-use results datasets in the data folder.
 # adjust to your output file or use the file in comment 
-results_agg_price <- "data/results/agg_price_2001-2019_2024-10-08 14:49:30.353889.csv" # "agg_price_results_hc.csv" 
-results_agg_mass <- "data/results/agg_mass_2001-2019_2024-10-08 18:06:25.887588.csv" # "agg_mass_results_hc.csv" 
-results_agg_equal <- "data/results/agg_equal_2001-2019_2024-10-09 11:54:50.346649.csv" # "agg_equal_results_hc.csv" 
-results_agg_primary <- "data/results/agg_primary_2001-2019_2024-10-09 16:06:50.373638.csv" # "agg_primary_results_hc.csv" 
+results_agg_price <- "results/agg_price_2001-2019_2024-10-08 14:49:30.353889.csv" # "agg_price_results_hc.csv" 
+results_agg_mass <- "results/agg_mass_2001-2019_2024-10-08 18:06:25.887588.csv" # "agg_mass_results_hc.csv" 
+results_agg_equal <- "results/agg_equal_2001-2019_2024-10-09 11:54:50.346649.csv" # "agg_equal_results_hc.csv" 
+results_agg_primary <- "results/agg_primary_2001-2019_2024-10-09 16:06:50.373638.csv" # "agg_primary_results_hc.csv" 
 # for sector-level results, please run sector-level models or download https://doi.org/10.5281/zenodo.13911608 and store in data/results folder
 source("R/033_Figure-3.R")
 
 ### Figure 4: 
 # requires forest loss data processed in step 1 Deforestation extension
 # requires GLORIA domestic extraction data processed in 027_parser_domestic_extraction.R
-# requires model results computed in step 2 run GLORIA 
+# requires model results computed in step 2 run GLORIA or pre-processed results files
 source("R/034_Figure-4.R")
 
 ### Supplementary information
