@@ -25,6 +25,6 @@ Hansen, M. et al. (2013): *High-resolution Global Maps of 21st-century Forest Co
 
 Lenzen, M. et al. (2017): *The Global MRIO Lab – Charting the World Economy*. Economic Systems Research, 29(2), pp. 158–186. [DOI](https://doi.org/10.1080/09535314.2017.1301887).
 
-Lenzen, M. et al. (2022): *Implementing the Material Footprint to Measure Progress towards Sustainable Development Goals 8 and 12*. Nature Sustainability, 5(2), pp. 157–166. [DOI](https://doi.org/10.1038/s41893-021-00806-6).
+Lenzen, M. et al. (2022): *Implementing the Material Footprint to Measure Progress towards Sustainable Development Goals 8 and 12*. Nature Sustainability, 5(2), pp. 157–166. [DOI](https://doi.org/10.1038/s41893-021-00811-6).
 
-Maus, V. et al. (2022): *An Update on Global Mining Land Use*. Scientific Data, 9(1), pp. 1–11. [DOI](https://doi.org/10.1038/s41597-022-01154-7).
+Maus, V. et al. (2022): *An Update on Global Mining Land Use*. Scientific Data, 9(1), pp. 1–11. [DOI](https://doi.org/10.1038/s41597-022-01547-4).
