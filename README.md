@@ -6,7 +6,7 @@ This repository contains the R scripts and datasets used to reproduce the result
 
 The repository is structured as follows:
 
-**`000_main.R`** – This script orchestrates the analysis pipeline, listing all steps in the process:
+**`R/000_main.R`** – This script orchestrates the analysis pipeline, listing all steps in the process:
 1. **Deforestation extension (Section 1)**: Allocates forest loss within mining areas to respective commodities.
 2. **Running the GLORIA EE-MRIO model (Section 2)**: Conducts the input-output analysis to trace deforestation impacts along the supply chain.
 3. **Visualisations (Section 3)**: Generates the figures included in the manuscript and supplementary information.
