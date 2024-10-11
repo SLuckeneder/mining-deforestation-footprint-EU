@@ -23,7 +23,7 @@ The repository is structured as follows:
 
 Hansen, M. et al. (2013): *High-resolution Global Maps of 21st-century Forest Cover Change*. Science, 342(6160), pp. 850–853. [DOI](https://doi.org/10.1126/science.1244693).
 
-Lenzen, M. et al. (2017): *The Global MRIO Lab – Charting the World Economy*. Economic Systems Research, 29(2), pp. 158–186. [DOI](https://doi.org/10.1080/09535314.2017.1309112).
+Lenzen, M. et al. (2017): *The Global MRIO Lab – Charting the World Economy*. Economic Systems Research, 29(2), pp. 158–186. [DOI](https://doi.org/10.1080/09535314.2017.1301887).
 
 Lenzen, M. et al. (2022): *Implementing the Material Footprint to Measure Progress towards Sustainable Development Goals 8 and 12*. Nature Sustainability, 5(2), pp. 157–166. [DOI](https://doi.org/10.1038/s41893-021-00806-6).
 
