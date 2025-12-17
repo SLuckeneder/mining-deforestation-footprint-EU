@@ -8,10 +8,10 @@ if (!dir.exists("figures/checks")){dir.create("figures/checks")}
 if (!dir.exists("figures/presentations")){dir.create("figures/presentations")}
 
 
-# 1 Deforestation extension -------------------------------------------------
+# 1 Tree cover loss extension -----------------------------------------------
 
-# Compute annual deforestation within mining polygons
-# --> this is done in Maus et al. 2024 (in preparation), hence just read and tidy the data
+# Compute annual tree cover loss within mining polygons
+# --> this is done in Maus et al. 2025 (in preparation), hence just read and tidy the data
 source("R/011_setup_forest_loss.R")
 
 # 4 approaches to allocate deforestation to 9 metal extraction sectors (for the analysis, we use price allocation)
@@ -39,22 +39,22 @@ source("R/026_parser_E_deforestation_primary.R")
 # Parser domestic extraction (taken from GLORIA material extension)
 source("R/027_parser_domestic_extraction.R")
 
-# Run deforestation footprints (using 4 different allocation methods, set manually in the code and re-run the model)
+# Run tree cover loss footprints (using 4 different allocation methods, set manually in the code and re-run the model)
 source("R/028_run_EEMRIO_forest_loss.R")
 
 
 # 3 Visualisations ----------------------------------------------------------
 
-### Figure 1 Forest loss global map + zoom-ins
+### Figure 1 Tree cover loss global map + zoom-ins
 # requires forest loss data processed in step 1 Deforestation extension
 source("R/031_Figure-1.R")
 
-### Figure 2: Global metal production (A), forest loss by commodity (B), direct intensities (C) 
+### Figure 2: Global metal production (A), tree cover loss by commodity (B), direct intensities (C) 
 # requires GLORIA domestic extraction data processed in 027_parser_domestic_extraction.R
-# requires forest loss data processed in step 1 Deforestation extension
+# requires forest loss data processed in step 1 Tree cover loss extension
 source("R/032_Figure-2.R")
 
-### Figure 3: Sankey diagram with EU as consumption region (A), EU forest loss FP by country of impact (B), EU forest loss FP sectoral composition (C)
+### Figure 3: Sankey diagram with EU as consumption region (A), EU tree cover loss FP by country of impact (B), EU tree cover loss FP sectoral composition (C)
 # requires model results computed in step 2 run GLORIA 
 # If the user skipped running the models, it is possible to continue with the ready-to-use results datasets in the data folder.
 # adjust to your output file or use the file in comment 
@@ -66,7 +66,7 @@ results_agg_primary <- "results/agg_primary_2001-2019_2024-10-09 16:06:50.373638
 source("R/033_Figure-3.R")
 
 ### Figure 4: 
-# requires forest loss data processed in step 1 Deforestation extension
+# requires tree cover loss data processed in step 1 Tree cover loss extension
 # requires GLORIA domestic extraction data processed in 027_parser_domestic_extraction.R
 # requires model results computed in step 2 run GLORIA or pre-processed results files
 source("R/034_Figure-4.R")
