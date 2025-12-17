@@ -6,6 +6,22 @@ library(scales)
 library(countrycode)
 library(wesanderson)
 
+# based on Okabe-Ito color palette https://easystats.github.io/see/reference/scale_color_okabeito.html
+commodities_palette <- c(
+  "#882255",  # dark red-purple
+  "#56B4E9",  # sky blue
+  "#0072B2",  # blue
+  "#D55E00",  # vermillion
+  "#F0E442",  # yellow
+  "#009E73",  # bluish green
+  "#CC79A7",  # pink/magenta
+  "#E69F00",  # orange
+  "#661100",  # dark brown-red
+  "#6699CC",  # light blue
+  "#994EA3",  # purple (replacing teal)
+  "grey"      # last stays grey
+) 
+
 # load extensions ---------------------------------------------------------
 
 
@@ -59,12 +75,12 @@ p <- E %>%
   dplyr::filter(year %in% c(2001, 2005, 2010, 2015, 2019)) %>%
   dplyr::group_by(year, commodity, type) %>%
   dplyr::summarise(forest_loss_km2 = sum(forest_loss_km2)) %>%
-  ggplot2::ggplot(aes(x = type, y = forest_loss_km2, fill = commodity), position = "fill") +
+  ggplot2::ggplot(aes(x = type, y = forest_loss_km2 * 100 / 1000, fill = commodity), position = "fill") + # thousand ha
   ggplot2::geom_bar(stat = "identity") +
   ggplot2::facet_grid(.~year) +
-  ggplot2::scale_y_continuous(limits = c(0, 800), expand = c(0, 0)) +
-  ggplot2::labs(title = NULL, x = NULL, y = expression("Forest loss (km"^2~")")) +
-  ggplot2::scale_fill_manual(name = NULL, values =  c(RColorBrewer::brewer.pal(n = 10, name = "Paired")[c(1:2)], "#0d218c", RColorBrewer::brewer.pal(n = 10, name = "Paired")[c(3:10)], "grey")) + 
+  ggplot2::scale_y_continuous(limits = c(0, 80), expand = c(0, 0)) +
+  ggplot2::labs(title = NULL, x = NULL, y = "Tree cover loss (thousand ha)") +
+  ggplot2::scale_fill_manual(name = NULL, values =  commodities_palette) + 
   ggplot2::theme_bw() +
   ggplot2::theme(title = element_text(size = 16),
                  axis.text.x = element_text(size = 14, angle = 45, hjust=1),
@@ -140,10 +156,10 @@ p_dat_production$from_region <- factor(p_dat_production$from_region, levels = c(
 p <- p_dat_production %>%
   dplyr::group_by(from_region, allocation) %>%
   dplyr::summarise(y2001_2019 = sum(y2001_2019)) %>%
-  ggplot2::ggplot(aes(x = from_region, y = y2001_2019, fill = allocation)) +
+  ggplot2::ggplot(aes(x = from_region, y = y2001_2019 * 100 / 1000, fill = allocation)) + # thousand ha
   ggplot2::geom_bar(stat = "identity", position = "dodge") +
-  ggplot2::labs(x = "Producer region", y = expression(Forest~loss~(km^2))) +
-  ggplot2::scale_y_continuous(limits = c(0, 3500), expand = c(0, 0)) +
+  ggplot2::labs(x = "Producer region", y = "Tree cover loss (thousand ha)") +
+  ggplot2::scale_y_continuous(limits = c(0, 350), expand = c(0, 0)) +
   ggplot2::scale_fill_manual(name = "Allocation type", values = wes_palette("Moonrise2", 4, type = "discrete")) + 
   ggplot2::theme_bw() +
   ggplot2::theme(axis.text.x = element_text(size = 12),
@@ -186,10 +202,10 @@ p_dat_consumption$to_region <- factor(p_dat_consumption$to_region, levels = c(to
 p <- p_dat_consumption %>%
   dplyr::group_by(to_region, allocation) %>%
   dplyr::summarise(y2001_2019 = sum(y2001_2019)) %>%
-  ggplot2::ggplot(aes(x = to_region, y = y2001_2019, fill = allocation)) +
+  ggplot2::ggplot(aes(x = to_region, y = y2001_2019 * 100 / 1000, fill = allocation)) + #thousand ha
   ggplot2::geom_bar(stat = "identity", position = "dodge") +
-  ggplot2::labs(x = "Consumer region", y = expression(Forest~loss~(km^2))) +
-  ggplot2::scale_y_continuous(limits = c(0, 2200), expand = c(0, 0)) +
+  ggplot2::labs(x = "Consumer region", y = "Tree cover loss (thousand ha)") +
+  ggplot2::scale_y_continuous(limits = c(0, 220), expand = c(0, 0)) +
   ggplot2::scale_fill_manual(name = "Allocation type", values = wes_palette("Moonrise2", 4, type = "discrete")) + 
   ggplot2::theme_bw() +
   ggplot2::theme(axis.text.x = element_text(size = 12),

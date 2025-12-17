@@ -15,6 +15,21 @@ path_parsed_nfs <- "/mnt/nfs_fineprint/tmp/gloria/v057new/parsed"
 labels <- read.csv(file.path(path_parsed_nfs, "labels.csv")) 
 regions <- readxl::read_xlsx("data/GLORIA_ReadMe_057.xlsx", sheet = 1)
 
+# based on Okabe-Ito color palette https://easystats.github.io/see/reference/scale_color_okabeito.html
+commodities_palette <- c(
+  "#882255",  # dark red-purple
+  "#56B4E9",  # sky blue
+  "#0072B2",  # blue
+  "#D55E00",  # vermillion
+  "#F0E442",  # yellow
+  "#009E73",  # bluish green
+  "#CC79A7",  # pink/magenta
+  "#E69F00",  # orange
+  "#661100",  # dark brown-red
+  "#6699CC",  # light blue
+  "#994EA3",  # purple (replacing teal)
+  "grey"      # last stays grey
+)
 
 # A domestic extraction ---------------------------------------------------
 
@@ -63,8 +78,8 @@ p_extraction <- extraction_mat %>%
   ggplot2::geom_area() +
   ggplot2::scale_y_continuous(limits = c(0, 17), expand = c(0, 0)) +
   ggplot2::scale_x_continuous(limits = c(2001, 2019), breaks = c(2001, 2005, 2010, 2015, 2019), expand = c(0, 0)) +
-  ggplot2::scale_fill_manual(name = NULL, values =  c(RColorBrewer::brewer.pal(n = 10, name = "Paired")[c(1:2)], "#0d218c", RColorBrewer::brewer.pal(n = 10, name = "Paired")[c(3:10)])) +
-  ggplot2::labs(title = "Global extraction", x = NULL, y = "Bn tonnes") +
+  ggplot2::scale_fill_manual(name = NULL, values =  commodities_palette) +
+  ggplot2::labs(title = "Global extraction", x = NULL, y = "billion tonnes") +
   ggplot2::theme_bw() +
   ggplot2::theme(title = element_text(size = 16),
                  axis.text.x = element_text(size = 14, vjust = -0.3),
@@ -105,12 +120,12 @@ E$commodity <- factor(E$commodity, levels = c(unique(E$commodity)))
 p_forest_loss <- E %>%
   dplyr::group_by(year, commodity) %>%
   dplyr::summarise(forest_loss_km2 = sum(forest_loss_km2)) %>%
-  ggplot2::ggplot(aes(x = year, y = forest_loss_km2, fill = commodity)) +
+  ggplot2::ggplot(aes(x = year, y = forest_loss_km2 * 100 / 1000, fill = commodity)) + # thousand ha
   ggplot2::geom_bar(stat = "identity") +
-  ggplot2::scale_y_continuous(limits = c(0, 1300), expand = c(0, 0), label = scales::comma) +
+  ggplot2::scale_y_continuous(limits = c(0, 130), expand = c(0, 0), label = scales::comma) +
   ggplot2::scale_x_continuous(limits = c(2000.5, 2019.5), breaks = c(2001, 2005, 2010, 2015, 2019) , expand = c(0, 0)) +
-  ggplot2::labs(title = "Forest loss within mining areas", x = NULL, y = expression(Km^2)) +
-  ggplot2::scale_fill_manual(name = NULL, values =  c(RColorBrewer::brewer.pal(n = 10, name = "Paired")[c(1:2)], "#0d218c", RColorBrewer::brewer.pal(n = 10, name = "Paired")[c(3:10)], "grey")) + 
+  ggplot2::labs(title = "Tree cover loss within mining areas", x = NULL, y = "thousand ha") +
+  ggplot2::scale_fill_manual(name = NULL, values =  commodities_palette) +
   ggplot2::theme_bw() +
   ggplot2::theme(title = element_text(size = 16),
                  axis.text.x = element_text(size = 14, vjust = -0.3),
@@ -147,9 +162,9 @@ for(i in seq_along(sectors)) {
     dplyr::group_by(year, commodity) %>%
     dplyr::summarise(forest_loss_km2 = sum(forest_loss_km2)) %>%
     dplyr::filter(commodity == sectors[i]) %>%
-    ggplot2::ggplot(aes(x = year, y = forest_loss_km2, fill = commodity)) +
-    ggplot2::geom_line(size = 0.8, colour = colpalette[i]) +
-    ggplot2::geom_point(shape = 15, size = 3, colour = colpalette[i]) +
+    ggplot2::ggplot(aes(x = year, y = forest_loss_km2 * 100 / 1000, fill = commodity)) + # thousand ha
+    ggplot2::geom_line(size = 0.8, colour = commodities_palette[i]) +
+    ggplot2::geom_point(shape = 15, size = 3, colour = commodities_palette[i]) +
     ggplot2::expand_limits(y = 0) + 
     scale_y_continuous(expand = c(0, 0, 0.05, 0)) +
     ggplot2::scale_x_continuous(limits = c(2001, 2019), breaks = c(2001, 2005, 2010, 2015, 2019) , expand = c(0, 0)) +
@@ -174,7 +189,7 @@ p_AK <- cowplot::plot_grid(store[[1]], store[[2]], store[[3]], store[[4]],
                            nrow=3,
                            labels = c("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"),
                            label_size = 12)
-y_grob <- grid::textGrob(expression("Forest loss (km"^2~")"), 
+y_grob <- grid::textGrob("Tree cover loss (thousand ha)", 
                          gp=gpar(fontsize=12), rot=90)
 p_AK <- gridExtra::grid.arrange(gridExtra::arrangeGrob(p_AK, left = y_grob))
 
@@ -261,7 +276,7 @@ p <- sunburst_data %>%
   ggplot2::ggplot(aes(x = type, y = percentage, fill = commodity, order = -total_value)) + 
   ggplot2::geom_col(color = "black", linewidth = 0.2) +
   ggplot2::coord_polar("y") +
-  ggplot2::scale_fill_manual(name = NULL, values =  rev(c(RColorBrewer::brewer.pal(n = 10, name = "Paired")[c(1:2)], "#0d218c", RColorBrewer::brewer.pal(n = 10, name = "Paired")[c(3:10)], "grey"))) + 
+  ggplot2::scale_fill_manual(name = NULL, values =  rev(commodities_palette)) +
   ggrepel::geom_label_repel(aes(label = country_isoa3), position = position_stack(vjust = 0.5), size = 8, show.legend = FALSE) +
   ggplot2::theme_void() +
   ggplot2::theme(legend.text = element_text(size = 20),
@@ -409,19 +424,19 @@ p_intensities <- p_dat %>%
                          expand = c(0, 0)) +
   ggplot2::scale_x_discrete(breaks = p_dat$sector, labels = p_dat$xlab) +
   ggplot2::scale_fill_manual(name = NULL,
-                             values = c("Bauxite" = RColorBrewer::brewer.pal(n = 10, name = "Paired")[1],
-                                        "Coal (hard coal)" = RColorBrewer::brewer.pal(n = 10, name = "Paired")[2],
-                                        "Coal (lignite and peat)" = "#0d218c",
-                                        "Copper ores" = RColorBrewer::brewer.pal(n = 10, name = "Paired")[3],
-                                        "Gold ores" = RColorBrewer::brewer.pal(n = 10, name = "Paired")[4],
-                                        "Iron ores" = RColorBrewer::brewer.pal(n = 10, name = "Paired")[5],
-                                        "Lead/zinc/silver ores" = RColorBrewer::brewer.pal(n = 10, name = "Paired")[6],
-                                        "Nickel ores" = RColorBrewer::brewer.pal(n = 10, name = "Paired")[7],
-                                        "Other non-ferrous ores" = RColorBrewer::brewer.pal(n = 10, name = "Paired")[8],
-                                        "Tin ores" = RColorBrewer::brewer.pal(n = 10, name = "Paired")[9],
-                                        "Uranium ores" = RColorBrewer::brewer.pal(n = 10, name = "Paired")[10])) +
+                             values = c("Bauxite" = commodities_palette[1],
+                                        "Coal (hard coal)" = commodities_palette[2],
+                                        "Coal (lignite and peat)" = commodities_palette[3],
+                                        "Copper ores" = commodities_palette[4],
+                                        "Gold ores" = commodities_palette[5],
+                                        "Iron ores" = commodities_palette[6],
+                                        "Lead/zinc/silver ores" = commodities_palette[7],
+                                        "Nickel ores" = commodities_palette[8],
+                                        "Other non-ferrous ores" = commodities_palette[9],
+                                        "Tin ores" = commodities_palette[10],
+                                        "Uranium ores" = commodities_palette[11])) +
   ggplot2::scale_colour_manual(values = c("Top 80%" = "red", "none" = "black")) +
-  ggplot2::labs(x = NULL, y = expression("Direct intensity (m"^2~"forest loss per 1,000 USD gross production)")) +
+  ggplot2::labs(x = NULL, y = expression("Direct intensity (m"^2~"tree cover loss per 1,000 USD gross production)")) +
   ggplot2::geom_text(aes(label = clab_manual), size = 3, nudge_x = 0.25) +
   ggplot2::coord_flip() +
   ggplot2::theme_bw() +
@@ -435,6 +450,7 @@ p_intensities <- p_dat %>%
                  panel.grid = element_blank(),
                  plot.background = element_blank(),
                  plot.margin = unit(c(5.5, 15.5, 5.5, 5.5), "pt"))
+
 
 # save single plot
 ggplot2::ggsave("figure-2C_intensities.png",

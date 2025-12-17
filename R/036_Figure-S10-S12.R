@@ -101,11 +101,11 @@ p_dat_CHN$from_region <- factor(p_dat_CHN$from_region, levels = rev(top_producer
 p_CHN <- p_dat_CHN %>%
   dplyr::group_by(to_sector_name2, from_region) %>%
   dplyr::summarise(y2001_2019 = sum(y2001_2019)) %>%
-  ggplot2::ggplot(aes(x = to_sector_name2, y = y2001_2019, fill = from_region)) +
+  ggplot2::ggplot(aes(x = to_sector_name2, y = y2001_2019 * 100 / 1000, fill = from_region)) + # thousand ha
   ggplot2::geom_bar(stat = "identity") +
-  ggplot2::labs(x = NULL, y = expression(Forest~loss~(km^2))) +
-  ggplot2::scale_y_continuous(limits = c(0, 550), breaks = scales::pretty_breaks(4), expand = c(0, 0)) +
-  ggplot2::scale_fill_manual(name = "Forest loss location",
+  ggplot2::labs(x = NULL, y = "Tree cover loss (thousand ha)") +
+  ggplot2::scale_y_continuous(limits = c(0, 55), breaks = scales::pretty_breaks(4), expand = c(0, 0)) +
+  ggplot2::scale_fill_manual(name = "Impact region",
                              values = c(
                                "IDN" = "#e41a1c",
                                "BRA" = "#1b4399",
@@ -126,7 +126,7 @@ p_CHN <- p_dat_CHN %>%
                  axis.title.x = element_text(size = 14, hjust = 1),
                  legend.title = element_text(size = 12),
                  legend.text = element_text(size = 11),
-                 legend.position = c(0.5, 0.1),
+                 legend.position = "bottom",
                  legend.direction = "horizontal",
                  panel.grid.minor = element_blank(),
                  panel.grid.major = element_blank(),
@@ -199,19 +199,20 @@ p_dat_USA$from_region <- factor(p_dat_USA$from_region, levels = rev(top_producer
 p_USA <- p_dat_USA %>%
   dplyr::group_by(to_sector_name2, from_region) %>%
   dplyr::summarise(y2001_2019 = sum(y2001_2019)) %>%
-  ggplot2::ggplot(aes(x = to_sector_name2, y = y2001_2019, fill = from_region)) +
+  ggplot2::ggplot(aes(x = to_sector_name2, y = y2001_2019 * 100 / 1000, fill = from_region)) + # thousand ha
   ggplot2::geom_bar(stat = "identity") +
-  ggplot2::labs(x = NULL, y = expression(Forest~loss~(km^2))) +
-  ggplot2::scale_y_continuous(limits = c(0, 150), breaks = scales::pretty_breaks(4), expand = c(0, 0)) +
-  ggplot2::scale_fill_manual(name = "Forest loss location",
-                             values = c("BRA" = "#1b4399",
-                                        "CAN" = "#40a9d3",
-                                        "XAF" = "#30873e",
-                                        "XAS" = "#f94de2",
-                                        "PER" = "#ff7f00",
-                                        "USA" = "#a65628",
-                                        "XEU" = "#f77d7d",
-                                        "XAM" = "#999999"))+
+  ggplot2::labs(x = NULL, y = "Tree cover loss (thousand ha)") +
+  ggplot2::scale_y_continuous(limits = c(0, 15), breaks = scales::pretty_breaks(4), expand = c(0, 0)) +
+  ggplot2::scale_fill_manual(name = "Impact region",
+                             values = c(
+                               "BRA" = "#1b4399",
+                               "CAN" = "#40a9d3",
+                               "XAF" = "#30873e",
+                               "XAS" = "#f94de2",
+                               "PER" = "#ff7f00",
+                               "USA" = "#a65628",
+                               "XEU" = "#f77d7d",
+                               "XAM" = "#999999"))+
   ggplot2::coord_flip() +
   ggplot2::theme_bw() +
   ggplot2::theme(axis.text.x = element_text(size = 14),
@@ -219,7 +220,7 @@ p_USA <- p_dat_USA %>%
                  axis.title.x = element_text(size = 14, hjust = 1),
                  legend.title = element_text(size = 12),
                  legend.text = element_text(size = 12),
-                 legend.position = c(0.5, 0.1),
+                 legend.position = "bottom",
                  legend.direction = "horizontal",
                  panel.grid.minor = element_blank(),
                  panel.grid.major = element_blank(),

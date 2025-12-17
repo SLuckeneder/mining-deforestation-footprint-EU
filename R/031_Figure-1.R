@@ -171,7 +171,7 @@ box_BRA <- box_BRA %>% sf::st_transform(st_crs("+proj=robin +lon_0=-180 +x_0=0 +
 box_GHA <- box_GHA %>% sf::st_transform(st_crs("+proj=robin +lon_0=-180 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"))
 box_IDN <- box_IDN %>% sf::st_transform(st_crs("+proj=robin +lon_0=-180 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"))
 
-p <- res %>% ggplot2::ggplot(aes(fill = def_total)) +
+p <- res %>% ggplot2::ggplot(aes(fill = def_total * 100 / 1000)) + # in thousand hectartes instead of km2
   ggplot2::geom_sf(data = world_robin, fill = "#FAFAFA") + 
   ggplot2::geom_sf(alpha = 0.65) + 
   ggplot2::geom_sf(data = box_BRA , fill = NA, colour = "black", lwd = 0.3) +
@@ -179,11 +179,11 @@ p <- res %>% ggplot2::ggplot(aes(fill = def_total)) +
   ggplot2::geom_sf(data = box_IDN , fill = NA, colour = "black", lwd = 0.3) +
   viridis::scale_fill_viridis(direction = -1, na.value = NA, option = "viridis") +
   ggplot2::coord_sf(datum = NA, xlim = lim$x_lim[[1]], ylim = lim$y_lim[[1]]) +
-  ggplot2::labs(fill = bquote('Forest loss within mine sites, 2001-2019 accumulated'~(km^2))) +
+  ggplot2::labs(fill = "Tree cover loss within mine sites, 2001-2019 accumulated (thousand ha)") +
   ggplot2::theme_void() +
   ggplot2::theme(legend.position = "bottom", 
                  legend.justification = "center",
-                 legend.box.margin=unit(c(-0.7,0,0,0), "cm")) + 
+                 legend.box.margin=unit(c(-0.5,0,-0.2,0), "cm")) + 
   ggplot2::guides(fill = guide_colorbar(barheight = unit(2, 
                                                          units = "mm"), barwidth = unit(140, units = "mm"), 
                                         title.position = "top", title.hjust = 0.5, label.hjust = 1))
@@ -208,13 +208,13 @@ ggplot2::ggsave("figure-1_maps.png",
 # SI map deforestation > 100 km2 ------------------------------------------
 
 p <- res %>% dplyr::filter(def_total > 100) %>% 
-  ggplot2::ggplot(aes(fill = def_total)) +
+  ggplot2::ggplot(aes(fill =  def_total * 100 / 1000)) + # in thousand hectartes instead of km2
   ggplot2::geom_sf(data = world_robin, fill = "#FAFAFA") +
   ggplot2::geom_sf(alpha = 0.65) +
   viridis::scale_fill_viridis(direction = -1, na.value = NA, option = "inferno", end = 0.9, 
-                              limits = c(100, 800), breaks = seq(100, 800, 100)) +
+                              limits = c(10, 80), breaks = seq(10, 80, 10)) +
   ggplot2::coord_sf(datum = NA, xlim = lim$x_lim[[1]], ylim = lim$y_lim[[1]]) +
-  ggplot2::labs(fill = bquote('Forest loss within mine sites, 2001-2019 accumulated'~(km^2))) +
+  ggplot2::labs(fill = "Tree cover loss within mine sites, 2001-2019 accumulated (thousand ha)") +
   ggplot2::theme_void() +
   ggplot2::theme(legend.position = "bottom",
                  legend.justification = "center",

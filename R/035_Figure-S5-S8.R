@@ -108,7 +108,7 @@ p <- forest_loss_sector %>%
       label.position = "bottom"
     )) +
   ggplot2::facet_wrap(.~short, nrow = 1) +
-  ggplot2::labs(x = NULL, y = NULL, fill =  expression(Forest~loss~within~mine~sites~(ha))) +
+  ggplot2::labs(x = NULL, y = NULL, fill =  expression(Tree~cover~loss~within~mine~sites~(ha))) +
   ggplot2::theme_bw() +
   ggplot2::theme(panel.grid.major = element_blank(), 
                  panel.grid.minor = element_blank(),
@@ -220,7 +220,7 @@ p <- forest_loss_extraction_sector %>%
       label.position = "bottom"
     )) +
   ggplot2::facet_wrap(.~short, nrow = 1) +
-  ggplot2::labs(x = NULL, y = NULL, fill =  expression(Forest~loss~within~mine~sites~(m^2~per~tonne~of~extracted~material))) +
+  ggplot2::labs(x = NULL, y = NULL, fill =  expression(Tree~cover~loss~within~mine~sites~(m^2~per~tonne~of~extracted~material))) +
   ggplot2::theme_bw() +
   ggplot2::theme(panel.grid.major = element_blank(), 
                  panel.grid.minor = element_blank(),

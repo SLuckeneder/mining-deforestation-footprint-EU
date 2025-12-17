@@ -48,7 +48,7 @@ for(i in seq_along(sectors)) {
   p_dat <- p_dat %>%
     dplyr::bind_rows(temp)
   p <- p_dat %>%
-    ggplot2::ggplot(aes(x = year, y = forest_loss_km2, fill = country_isoa3, label = country_isoa3_lab)) +
+    ggplot2::ggplot(aes(x = year, y = forest_loss_km2 * 100 / 1000, fill = country_isoa3, label = country_isoa3_lab)) + # thousand ha
     ggplot2::geom_bar(stat = "identity", color = "darkgrey") +
     ggplot2::scale_y_continuous(expand = expansion(mult = c(0, .05))) +
     ggplot2::scale_x_continuous(limits = c(2000.5, 2019.5), breaks = c(2001, 2005, 2010, 2015, 2019), expand = c(0, 0)) +
@@ -73,7 +73,7 @@ p_AL <- cowplot::plot_grid(store[[1]], store[[2]], store[[3]], store[[4]],
                            labels = c("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"),
                            label_size = 12)
 
-y_grob <- grid::textGrob(expression("Forest loss (km"^2~")"), 
+y_grob <- grid::textGrob("Tree cover loss (thousand ha)", 
                          gp=gpar(fontsize=14), rot=90)
 p_AL <- gridExtra::grid.arrange(gridExtra::arrangeGrob(p_AL, left = y_grob))
 

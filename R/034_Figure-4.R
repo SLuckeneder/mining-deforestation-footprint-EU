@@ -15,6 +15,22 @@ path_parsed_nfs <- "/mnt/nfs_fineprint/tmp/gloria/v057new/parsed"
 labels <- read.csv(file.path(path_parsed_nfs, "labels.csv")) 
 regions <- readxl::read_xlsx("data/GLORIA_ReadMe_057.xlsx", sheet = 1)
 
+# based on Okabe-Ito color palette https://easystats.github.io/see/reference/scale_color_okabeito.html
+commodities_palette <- c(
+  "#882255",  # dark red-purple
+  "#56B4E9",  # sky blue
+  "#0072B2",  # blue
+  "#D55E00",  # vermillion
+  "#F0E442",  # yellow
+  "#009E73",  # bluish green
+  "#CC79A7",  # pink/magenta
+  "#E69F00",  # orange
+  "#661100",  # dark brown-red
+  "#6699CC",  # light blue
+  "#994EA3",  # purple (replacing teal)
+  "grey"      # last stays grey
+) 
+
 # x-axis: forest loss intensities (Fig. 2C) -------------------------------
 
 nreg <- length(unique(labels$Region_acronyms))
@@ -242,10 +258,14 @@ for(i in seq_along(sectors)) {
     dplyr::filter(value > 0, sector == sectors[i]) %>%
     dplyr::bind_rows(temp) %>%
     ggplot2::ggplot(aes(x = intensity, y = value / 1000000000, label = label2)) +
-    ggplot2::geom_point(aes(size = y2001_2019), shape = 21, colour = "black", fill = colpalette[i]) +
+    ggplot2::geom_vline(xintercept = mean(p_dat$intensity[p_dat$sector == sectors[i] & p_dat$value > 0], na.rm = TRUE),
+                        linetype = "dashed", colour = "grey40") +
+    ggplot2::geom_hline(yintercept = mean(p_dat$value[p_dat$sector == sectors[i] & p_dat$value > 0] / 1000000000, na.rm = TRUE),
+                        linetype = "dashed", colour = "grey40") +
+    ggplot2::geom_point(aes(size = y2001_2019 * 100 / 1000), shape = 21, colour = "black", fill = commodities_palette[i]) + # thousand ha
     ggplot2::scale_x_log10(labels = trans_format("log10", math_format(10^.x)),
                            breaks = c(0.00000001, 0.000001, 0.0001, 0.01, 1, 100, 10000, 1000000)) +
-    ggplot2::scale_size(breaks=c(10, 40, 80, 120, 160)) +
+    ggplot2::scale_size(breaks=c(1, 4, 8, 12, 16)) +
     ggrepel::geom_text_repel() +
     ggplot2::labs(title = ifelse(sectors[i] == "Aluminium ore", "Bauxite", sectors[i]),
                   x = NULL,
@@ -265,15 +285,15 @@ for(i in seq_along(sectors)) {
 p_legend <- p_dat %>%
   dplyr::filter(value > 0, sector == sectors[5]) %>%
   ggplot2::ggplot(aes(x = intensity, y = value / 1000000000, label = label2)) +
-  ggplot2::geom_point(aes(size = y2001_2019), shape = 21, colour = "black", fill = "white") +
+  ggplot2::geom_point(aes(size = y2001_2019 * 100 / 1000), shape = 21, colour = "black", fill = "white") + # thousand ha
   ggplot2::scale_x_log10(labels = trans_format("log10", math_format(10^.x)),
                          breaks = c(0.00000001, 0.000001, 0.0001, 0.01, 1, 100, 10000, 1000000)) +
-  ggplot2::scale_size(breaks=c(10, 40, 80, 120, 160)) +
+  ggplot2::scale_size(breaks=c(1, 4, 8, 12, 16)) +
   ggrepel::geom_text_repel() +
   ggplot2::labs(title = NULL,
-                x = expression("Direct intensity (m"^2~"forest loss per 1,000 USD gross production)"),
+                x = expression("Direct intensity (m"^2~"tree cover loss per 1,000 USD gross production)"),
                 y = "2001-2019 extraction (bn tonnes)",
-                size = bquote('Forest loss'~(km^2))) +
+                size = "Tree cover loss \n(thousand ha)") +
   ggplot2::guides(fill = "none") +
   ggplot2::theme_bw() +
   ggplot2::theme(panel.grid.minor = element_blank(),
@@ -288,7 +308,7 @@ p_AK <- cowplot::plot_grid(store[[1]], store[[2]], store[[3]], store[[4]],
                            label_size = 12)
 
 #create common x and y labels
-x_grob <- grid::textGrob(expression("Direct intensity (m"^2~"forest loss per 1,000 USD gross production)"), 
+x_grob <- grid::textGrob(expression("Direct intensity (m"^2~"tree cover loss per 1,000 USD gross production)"), 
                          gp=gpar(fontsize=12))
 y_grob <- grid::textGrob("2001-2019 extraction (bn tonnes)", 
                          gp=gpar(fontsize=12), rot=90)

@@ -8,12 +8,28 @@ library(ggalluvial)
 library(countrycode)
 library(cowplot)
 
-path_results <- "data"
+path_results <- "data/results"
+
+# based on Okabe-Ito color palette https://easystats.github.io/see/reference/scale_color_okabeito.html
+commodities_palette <- c(
+  "#882255",  # dark red-purple
+  "#56B4E9",  # sky blue
+  "#0072B2",  # blue
+  "#D55E00",  # vermillion
+  "#F0E442",  # yellow
+  "#009E73",  # bluish green
+  "#CC79A7",  # pink/magenta
+  "#E69F00",  # orange
+  "#661100",  # dark brown-red
+  "#6699CC",  # light blue
+  "#994EA3",  # purple (replacing teal)
+  "grey"      # last stays grey
+)
 
 # A sankey ----------------------------------------------------------------
 
 # adjust here to access the correct model results file:
-file <- results_agg_price #results_agg_price, results_agg_mass, results_agg_equal, results_agg_primary
+file <- "agg_price_2001-2019_2024-10-08 14:49:30.353889.csv"
 store <- read.csv(file.path(path_results, file))
 
 # aggregate EU27
@@ -144,7 +160,6 @@ ggplot2::ggsave("figure-S9_full_colour_sankey.png",
 
 # B EU consumption --------------------------------------------------------
 
-path_results <- "data/results"
 years <- c(2001:2019)
 
 files <- dir(path_results) %>% stringr::str_subset(pattern = "^sec.*\\.csv") %>%  stringr::str_subset(pattern = paste(years, collapse = "|"))
@@ -237,11 +252,11 @@ EU_data <- EU_data %>%
   dplyr::mutate(from_sector_name  = ifelse(from_sector_name == "Aluminium ore", "Bauxite", from_sector_name))
 
 p_from_regions <- EU_data %>%
-  ggplot2::ggplot(aes(x = from_region, y = y2001_2019, fill = from_sector_name)) +
+  ggplot2::ggplot(aes(x = from_region, y = y2001_2019 * 100 / 1000, fill = from_sector_name)) + # thousand ha
   ggplot2::geom_bar(stat = "identity") +
-  ggplot2::labs(x = NULL, y = expression(Forest~loss~(km^2))) +
-  ggplot2::scale_y_continuous(limits = c(0, 250), expand = c(0, 0)) +
-  ggplot2::scale_fill_manual(name = NULL, values =  c(RColorBrewer::brewer.pal(n = 10, name = "Paired")[c(1:2)], "#0d218c", RColorBrewer::brewer.pal(n = 10, name = "Paired")[c(3:10)])) + 
+  ggplot2::labs(x = NULL, y = "Tree cover loss (thousand ha)") +
+  ggplot2::scale_y_continuous(limits = c(0, 25), expand = c(0, 0)) +
+  ggplot2::scale_fill_manual(name = NULL, values =  commodities_palette) + 
   ggplot2::coord_flip() +
   ggplot2::theme_bw() +
   ggplot2::theme(axis.text.x = element_text(size = 14),
@@ -321,11 +336,11 @@ p_dat_EU$from_region <- factor(p_dat_EU$from_region, levels = rev(top_producers_
 p_EU <- p_dat_EU %>%
   dplyr::group_by(to_sector_name2, from_region) %>%
   dplyr::summarise(y2001_2019 = sum(y2001_2019)) %>%
-  ggplot2::ggplot(aes(x = to_sector_name2, y = y2001_2019, fill = from_region)) +
+  ggplot2::ggplot(aes(x = to_sector_name2, y = y2001_2019 * 100 / 1000, fill = from_region)) + # thousand ha
   ggplot2::geom_bar(stat = "identity") +
-  ggplot2::labs(x = NULL, y = expression(Forest~loss~(km^2))) +
-  ggplot2::scale_y_continuous(limits = c(0, 180), breaks = scales::pretty_breaks(8), expand = c(0, 0)) +
-  ggplot2::scale_fill_manual(name = "Forest loss impact", 
+  ggplot2::labs(x = NULL, y = "Tree cover loss (thousand ha)") +
+  ggplot2::scale_y_continuous(limits = c(0, 18), breaks = scales::pretty_breaks(8), expand = c(0, 0)) +
+  ggplot2::scale_fill_manual(name = "Impacted region", 
                              values = c("IDN" = "#e41a1c", 
                                         "BRA" = "#1b4399", 
                                         "CAN" = "#40a9d3",
