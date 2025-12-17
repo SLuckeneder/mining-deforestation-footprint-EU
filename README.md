@@ -1,6 +1,6 @@
 # Tracing deforestation from mining areas to final demand of EU industries
 
-This repository contains the R scripts and datasets used to reproduce the results from the working paper *EU consumption's hidden link to global deforestation caused by mining*. The full paper is available at [https://doi.org/10.57938/b890eed0-1ab4-43af-b577-df48f43290a6](https://doi.org/10.57938/b890eed0-1ab4-43af-b577-df48f43290a6).
+This repository contains the R scripts and datasets used to reproduce the results from the paper *Mining-related tree cover loss embodied in EU consumption*.
 
 ## Repository Structure
 
