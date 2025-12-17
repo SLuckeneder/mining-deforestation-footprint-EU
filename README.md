@@ -1,4 +1,4 @@
-# Tracing deforestation from mining areas to final demand of EU industries
+# Tracing mining-related tree cover loss to final demand of EU industries
 
 This repository contains the R scripts and datasets used to reproduce the results from the paper *Mining-related tree cover loss embodied in EU consumption*.
 
