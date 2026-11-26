@@ -1,0 +1,22 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+# ignore SNL production data (copyright)
+data/SNL_production
+data/SNL/old
+
+# ignore intermediate and final results
+data/parsed
+data/parsed_v0
+data/results
+data/results_v0
+figures
+
+# other old studd
+data/forest_loss/old
+
+# large stuff
+data/forest_loss/mine_polygons.gpkg
+data/forest_loss/mine_forest_loss.csv
